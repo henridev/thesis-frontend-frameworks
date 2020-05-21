@@ -1,102 +1,82 @@
-import React from "react";
-import Item from "../components/todo/Item";
+import React, { useState, useEffect } from "react";
 import "../styles/todo.css";
+import api from "../api/todo";
+import Header from "../components/Header";
+import Add from "../components/Add";
+import Item from "../components/Item";
 
 export default function Todo() {
+  const [todos, settodos] = useState([]);
+  useEffect(() => {
+    const res = api.getAll().then((_todos) => {
+      console.log("_todos", _todos);
+      settodos(_todos.todos);
+    });
+
+    return () => {};
+  }, []);
+
+  function handleDelete(id) {
+    console.log("id", id);
+    api.delete(id).then((res) => {
+      console.log("delete done", res);
+      settodos(todos.filter((todo) => todo._id !== id));
+    });
+  }
+
+  function handleStatusChange(id, status) {
+    settodos(
+      todos.map((todo) => {
+        if (todo._id === id) todo.completed = !todo.completed;
+        return todo;
+      })
+    );
+    api.update(id, status, "").then((res) => {
+      console.log("status change done", res);
+    });
+  }
+
+  function handleTitleChange(id, title) {
+    settodos(
+      todos.map((todo) => {
+        if (todo._id === id) todo.title = title;
+        return todo;
+      })
+    );
+    api.update(id, "", title).then((res) => {
+      console.log("title change done", res);
+    });
+  }
+
+  function handleCreation(title) {
+    api.create(title).then((res) => {
+      const newest = [...todos];
+      newest.push(res);
+      settodos(newest);
+    });
+  }
+
   return (
-    <div class="page-content page-container" id="page-content">
-      <div class="padding">
-        <div class="row container d-flex justify-content-center">
-          <div class="col-lg-12">
-            <div class="card px-3">
-              <div class="card-body">
-                <h4 class="card-title">Awesome Todo list</h4>
-                <div class="add-items d-flex">
-                  {" "}
-                  <input
-                    type="text"
-                    class="form-control todo-list-input"
-                    placeholder="What do you need to do today?"
-                  />{" "}
-                  <button class="add btn btn-primary font-weight-bold todo-list-add-btn">
-                    Add
-                  </button>{" "}
-                </div>
-                <div class="list-wrapper">
-                  <ul class="d-flex flex-column-reverse todo-list">
-                    <Item />
-                    <li class="completed">
-                      <div class="form-check">
-                        {" "}
-                        <label class="form-check-label">
-                          {" "}
-                          <input
-                            class="checkbox"
-                            type="checkbox"
-                            checked=""
-                          />{" "}
-                          For what reason would it be advisable for me to think.{" "}
-                          <i class="input-helper"></i>
-                        </label>{" "}
-                      </div>{" "}
-                      <i class="remove mdi mdi-close-circle-outline"></i>
-                    </li>
-                    <li>
-                      <div class="form-check">
-                        {" "}
-                        <label class="form-check-label">
-                          {" "}
-                          <input class="checkbox" type="checkbox" /> it be
-                          advisable for me to think about business content?{" "}
-                          <i class="input-helper"></i>
-                        </label>{" "}
-                      </div>{" "}
-                      <i class="remove mdi mdi-close-circle-outline"></i>
-                    </li>
-                    <li>
-                      <div class="form-check">
-                        {" "}
-                        <label class="form-check-label">
-                          {" "}
-                          <input class="checkbox" type="checkbox" /> Print
-                          Statements all <i class="input-helper"></i>
-                        </label>{" "}
-                      </div>{" "}
-                      <i class="remove mdi mdi-close-circle-outline"></i>
-                    </li>
-                    <li class="completed">
-                      <div class="form-check">
-                        {" "}
-                        <label class="form-check-label">
-                          {" "}
-                          <input
-                            class="checkbox"
-                            type="checkbox"
-                            checked=""
-                          />{" "}
-                          Call Rampbo <i class="input-helper"></i>
-                        </label>{" "}
-                      </div>{" "}
-                      <i class="remove mdi mdi-close-circle-outline"></i>
-                    </li>
-                    <li>
-                      <div class="form-check">
-                        {" "}
-                        <label class="form-check-label">
-                          {" "}
-                          <input class="checkbox" type="checkbox" /> Print bills{" "}
-                          <i class="input-helper"></i>
-                        </label>{" "}
-                      </div>{" "}
-                      <i class="remove mdi mdi-close-circle-outline"></i>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="container">
+      <Header />
+      <div className="content">
+        <ul id="list">
+          {todos.map((todo) => {
+            return (
+              <Item
+                key={todo._id}
+                id={todo._id}
+                isComplete={todo.completed}
+                title={todo.title}
+                handleDelete={handleDelete}
+                handleStatusChange={handleStatusChange}
+                handleTitleChange={handleTitleChange}
+              />
+            );
+          })}
+        </ul>
       </div>
+      <Add handleCreation={handleCreation} />
     </div>
   );
 }

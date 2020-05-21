@@ -5,7 +5,7 @@ console.log(process.env.NODE_ENV);
 const service = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? "/api/auth"
+      ? "/api/todo"
       : `http://${window.location.hostname}:5000/api/todo`,
   withCredentials: true,
 });
@@ -21,19 +21,38 @@ const errHandler = (err) => {
 
 export default {
   service: service,
-  create() {
-    service.post();
+  create(title, completed) {
+    return service
+      .post(`/`, { title, completed })
+      .then((res) => res.data.todo)
+      .catch(errHandler);
   },
 
-  read() {
-    service.get();
+  read(_id) {
+    return service
+      .get(`/${_id}`)
+      .then((res) => res.data)
+      .catch(errHandler);
   },
 
-  update() {
-    service.put();
+  update(_id, status = "", title = "") {
+    return service
+      .put(`/${_id}`, { status, title })
+      .then((res) => res.data)
+      .catch(errHandler);
   },
 
-  delete() {
-    service.delete();
+  delete(_id) {
+    return service
+      .delete(`/${_id}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  getAll() {
+    return service
+      .get("/all")
+      .then((res) => res.data)
+      .catch(errHandler);
   },
 };

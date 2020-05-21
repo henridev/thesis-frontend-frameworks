@@ -42,23 +42,8 @@ app.use(cookieParser());
 // Example: http://localhost:5000/favicon.ico => Display "~/client/build/favicon.ico"
 app.use(express.static(path.join(__dirname, "../client/react-front/build")));
 
-// Enable authentication using session + passport
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "secret",
-    resave: true,
-    saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
-);
-require("./passport")(app);
+app.use("/api/todo", require("./routes/todo"));
 
-// app.use("/api/user", require("./routes/auth"));
-// app.use("/api/friends", require("./routes/friends"));
-// app.use("/api", require("./routes/meetups"));
-
-// create an error if we have an api route that does not
-// seem to find an route
 app.use("/api/*", (req, res, next) => {
   let err = new Error("Not Found");
   err.status = 404;
@@ -75,11 +60,8 @@ app.use((err, req, res, next) => {
   console.error("----- An error happened -----");
   console.error(err);
 
-  // only render if the error ocurred before sending the response
   if (!res.headersSent) {
     res.status(err.status || 500);
-
-    // A limited amount of information sent in production
     if (process.env.NODE_ENV === "production") res.json(err);
     else
       res.json(

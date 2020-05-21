@@ -56,4 +56,25 @@ async function createTodos(userIDS) {
   }
 }
 
-createUsers();
+async function createTodos(userIDS) {
+  try {
+    await Todo.deleteMany();
+    const TodosCreated = await Todo.insertMany(todos);
+    const TodoIDS = TodosCreated.map((u) => u._id);
+    userIDS.forEach((id) => {
+      // Shuffle array
+      const shuffled = TodoIDS.sort(() => 0.5 - Math.random());
+      // Get sub-array of first n elements after shuffled
+      let selectedtodos = shuffled.slice(0, 10);
+      User.findByIdAndUpdate(id, {
+        $addToSet: { _todos: { $each: selectedtodos } },
+      })
+        .then((res) => console.log("res", res))
+        .catch((err) => console.log("err", err));
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// createUsers();
