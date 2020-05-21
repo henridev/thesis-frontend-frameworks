@@ -4,6 +4,10 @@ body {
   margin: 0;
   background-color: rgba(0, 0, 0, 0.1);
   font-family: "Titillium Web", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 /* ------------ container ------------ */
