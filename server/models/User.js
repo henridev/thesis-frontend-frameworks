@@ -5,12 +5,18 @@ const schema = new Schema(
   {
     username: { type: String },
     email: { type: String },
-    firstName: { type: String },
-    lastName: { type: String },
+    first_name: { type: String },
+    last_name: { type: String },
     password: { type: String, default: "" },
-    _chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
+    gender: { type: String, enum: ["Female", "Male"] },
+    phone: { type: String },
+    job: { type: String },
+    _contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    _todos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Todo" }],
+    // _chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
   },
   {
+    collection: "users",
     timestamps: {
       createdAt: "created_at",
       updatedAt: "updated_at",

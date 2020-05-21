@@ -3,14 +3,15 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema(
   {
-    username: { type: String },
-    email: { type: String },
-    firstName: { type: String },
-    lastName: { type: String },
-    password: { type: String, default: "" },
-    _chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
+    title: { type: String, required: true },
+    completed: {
+      type: Boolean,
+      required: true,
+    },
+    // _user: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
+    collection: "todos",
     timestamps: {
       createdAt: "created_at",
       updatedAt: "updated_at",
@@ -18,4 +19,4 @@ const schema = new Schema(
   }
 );
 
-module.exports = mongoose.model("User", schema);
+module.exports = mongoose.model("Todo", schema);
