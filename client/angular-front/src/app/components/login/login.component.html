@@ -1,0 +1,7 @@
+<div class="form-signin">
+    <h1 class="h3 mb-3 font-weight-normal marge">Please sign in</h1>
+    <input [formControl]="email" name="email" type="email" class="form-control marge" placeholder="Email address" />
+    <input [formControl]="password" name="password" type="password" class="form-control marge" placeholder="Password" />
+    <button (click)="login()" class="btn btn-lg btn-danger btn-block marge">Sign in</button>
+    <span class="text-primary marge" (click)="switchLogin()">make an account</span>
+</div>

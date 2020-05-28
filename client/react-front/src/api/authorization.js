@@ -1,0 +1,37 @@
+import axios from "axios";
+
+console.log(process.env.NODE_ENV);
+
+const service = axios.create({
+    baseURL:
+        process.env.NODE_ENV === "production"
+            ? "/api/authorization"
+            : `http://${window.location.hostname}:5000/api/authorization`,
+    withCredentials: true,
+});
+
+const errHandler = (err) => {
+    console.error(err);
+    if (err.response && err.response.data) {
+        console.error("API response", err.response.data);
+        throw err.response.data.message;
+    }
+    throw err;
+};
+
+export default {
+    service: service,
+    login(email, password) {
+        return service
+            .post(`/login`, { email, password })
+            .then((res) => res.data.user)
+            .catch(errHandler);
+    },
+
+    signup(name, email, password) {
+        return service
+            .post(`/signup`, { name, email, password })
+            .then((res) => res.data.user)
+            .catch(errHandler);
+    },
+};

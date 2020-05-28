@@ -1,22 +1,14 @@
-<li *ngIf="todo" class="item">
-  <div job="complete" id="0" (click)="handleStatusChange()">
+<li *ngIf="todo" class="list-group-item">
+  <div (click)="handleStatusChange()">
     <i *ngIf="todo['completed']" class="fas fa-check-circle"></i>
     <i *ngIf="!todo['completed']" class="fas fa-circle"></i>
   </div>
-  <input *ngIf="isEdit" class="text" [formControl]="title" />
-  <i
-    *ngIf="isEdit"
-    class="fas fa-spell-check"
-    (click)="handleTitleChange()"
-  ></i>
-  <i *ngIf="isEdit" class="fas fa-ban" (click)="setEdit()"></i>
-  <p *ngIf="!isEdit" class="text" #TitleBlock>{{ todo["title"] }}</p>
-  <i
-    *ngIf="!isEdit"
-    class="fas fa-edit"
-    job="delete"
-    id="0"
-    (click)="setEdit()"
-  ></i>
-  <i class="far fa-trash-alt" job="delete" id="0" (click)="handleDelete()"></i>
+  <input *ngIf="isEdit" class="todo-text" [formControl]="title" />
+  <span *ngIf="!isEdit" class="todo-text" #TitleBlock>{{ todo["title"] }}</span>
+  <span class="button-group">
+    <i *ngIf="isEdit" class="fas fa-spell-check" (click)="handleTitleChange()"></i>
+    <i *ngIf="isEdit" class="fas fa-ban" (click)="setEdit()"></i>
+    <i *ngIf="!isEdit" class="fas fa-edit" (click)="setEdit()"></i>
+    <i class="far fa-trash-alt" (click)="handleDelete()"></i>
+  </span>
 </li>

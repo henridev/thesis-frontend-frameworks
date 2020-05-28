@@ -1,20 +1,15 @@
-<div class="container">
-  <div class="header">
-    <div class="clear">
-      <i class="fa fa-refresh"></i>
-    </div>
-    <div id="date"></div>
-  </div>
-  <div class="content">
-    <ul id="list">
-      <li *ngFor="let todo of todos">
-        <app-item
-          [todo]="todo"
-          (delete)="onDelete($event)"
-          (change)="onChange($event)"
-        ></app-item>
-      </li>
+<div class="card">
+  <div class="card-header background-image"></div>
+  <div class="card-body">
+    <ul class="list-group">
+      <li class="list-group-item active">Hello these are your todos for today</li>
+      <span class="todo-items">
+
+        <app-item *ngFor="let todo of todos" [todo]="todo" (delete)="onDelete($event)" (change)="onChange($event)">
+        </app-item>
+
+      </span>
+      <app-add (add)="onAdd($event)"></app-add>
     </ul>
   </div>
-  <app-add (add)="onAdd($event)"></app-add>
 </div>

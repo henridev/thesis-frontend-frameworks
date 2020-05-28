@@ -1,4 +1,10 @@
-<div class="add-to-do">
-  <i class="fa fa-plus-circle" (click)="addTodo()"></i>
-  <input type="text" id="input" placeholder="Add todo" [formControl]="todo" />
-</div>
+<li class="list-group-item">
+  <div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+      <input type="text" id="input" placeholder="Add todo" [formControl]="todo" class="form-control" />
+      <span class="input-group-text" id="inputGroup-sizing-sm">
+        <i class="fa fa-plus-circle" (click)="addTodo()"></i>
+      </span>
+    </div>
+  </div>
+</li>

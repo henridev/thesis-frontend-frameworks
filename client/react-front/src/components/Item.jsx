@@ -10,53 +10,52 @@ export default function Item({
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
+
+  const EditIcons = () => (
+    <>
+      <i
+        className="fas fa-spell-check"
+        onClick={(e) => {
+          handleTitleChange(id, newTitle);
+          setIsEdit(!isEdit);
+        }}
+      ></i>
+      <i className="fas fa-ban" onClick={(e) => setIsEdit(!isEdit)}></i>
+    </>
+  );
+
   return (
-    <li className="item">
-      <div
-        job="complete"
-        id="0"
-        onClick={(e) => handleStatusChange(id, !isComplete)}
-      >
-        {isComplete ? (
-          <i className="fas fa-check-circle"></i>
-        ) : (
-          <i className="fas fa-circle"></i>
-        )}
-      </div>
-      {isEdit ? (
-        <>
-          <input
-            placeholder={title}
-            className="text"
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-          />
-          <i
-            className="fas fa-spell-check"
-            onClick={(e) => {
-              handleTitleChange(id, newTitle);
-              setIsEdit(!isEdit);
-            }}
-          ></i>
-          <i className="fas fa-ban" onClick={(e) => setIsEdit(!isEdit)}></i>
-        </>
-      ) : (
-        <p className="text">{title}</p>
-      )}
-      {!isEdit && (
+    <li className="list-group-item">
+      {isComplete ? (
         <i
-          className="fas fa-edit"
-          job="delete"
-          id="0"
-          onClick={(e) => setIsEdit(!isEdit)}
+          className="fas fa-check-circle"
+          onClick={(e) => handleStatusChange(id, !isComplete)}
+        ></i>
+      ) : (
+        <i
+          className="fas fa-circle"
+          onClick={(e) => handleStatusChange(id, !isComplete)}
         ></i>
       )}
-      <i
-        className="far fa-trash-alt"
-        job="delete"
-        id="0"
-        onClick={(e) => handleDelete(id)}
-      ></i>
+
+      {isEdit && (
+        <input
+          placeholder={title}
+          className="todo-text"
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+        />
+      )}
+      {!isEdit && <span className="todo-text">{title}</span>}
+      <span className="button-group">
+        {!isEdit ? (
+          <i className="fas fa-edit" onClick={(e) => setIsEdit(!isEdit)}></i>
+        ) : (
+          <EditIcons />
+        )}
+
+        <i className="far fa-trash-alt" onClick={(e) => handleDelete(id)}></i>
+      </span>
     </li>
   );
 }

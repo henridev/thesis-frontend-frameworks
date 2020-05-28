@@ -1,49 +1,28 @@
 <template>
-  <div class="container">
-    <top></top>
-    <div class="content">
-      <ul id="list">
-        <item v-for="todo in todos" :key="todo._id" :todo="todo" @delete="onDelete"/>
-      </ul>
-    </div>
-    <add @created="onCreate"></add>
+  <div>
+    <navigation v-bind:user="user" @logout="logout"></navigation>
+    <router-view @user="setUser"></router-view>
   </div>
 </template>
 
 <script>
-import item from "./components/Item";
-import top from "./components/Top.vue";
-import add from "./components/Add.vue";
-import api from "./api";
+import navigation from "./components/Navigation.vue";
 export default {
   name: "App",
   components: {
-    item,
-    top,
-    add
+    navigation
   },
   methods: {
-    onDelete(id) {
-      this.todos = this.todos.filter(todo => todo._id !== id);
+    setUser(user) {
+      this.user = user;
     },
-    onCreate(todo) {
-      console.log(todo, "cre");
-      this.todos.push(todo);
+    logout() {
+      this.user = null;
+      this.$router.push("/");
     }
   },
   data() {
-    return {
-      todos: []
-    };
-  },
-  created() {
-    api
-      .getAll()
-      .then(res => {
-        console.log(res);
-        this.todos = res.todos;
-      })
-      .catch(err => console.log("err", err));
+    return { user: null };
   }
 };
 </script>
@@ -58,26 +37,5 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-}
-
-.container {
-  padding: 10px;
-  width: 380px;
-  margin: 0 auto;
-}
-
-.content {
-  width: 380px;
-  height: 350px;
-  max-height: 350px;
-  background-color: #fff;
-  overflow: auto;
-}
-.content::-webkit-scrollbar {
-  display: none;
-}
-.content ul {
-  padding: 0;
-  margin: 0;
 }
 </style>

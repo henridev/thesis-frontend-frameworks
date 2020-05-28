@@ -15,7 +15,7 @@ const httpOptions = {
 })
 export class TodoService {
   url: string = "/api/todo";
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient) { }
   create(title, completed) {
     return this.http.post(this.url, { title, completed });
   }
