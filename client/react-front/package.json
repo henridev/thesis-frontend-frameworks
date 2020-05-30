@@ -36,6 +36,8 @@
     ]
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "chalk": "^4.0.0",
     "progress-bar-webpack-plugin": "^2.1.0",
     "webpack-bundle-analyzer": "^3.8.0"
