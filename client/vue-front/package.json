@@ -10,7 +10,7 @@
     "complexity-report": "./node_modules/.bin/es6-plato -r -d ./report src"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-plugin-transform-vue-template": "^0.4.2",
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
